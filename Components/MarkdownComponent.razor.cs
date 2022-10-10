@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Components;
 
 namespace Components;
 
-public partial class MarkdownComponent
+public partial class MarkdownComponent : ComponentBase
 {
     private string? _content;
+
+    [Inject] protected HttpClient HttpClient { get; set; } = default!;
 
     [Parameter] public string FilePath { get; set; } = default!;
 
