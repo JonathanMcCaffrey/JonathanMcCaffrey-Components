@@ -9,6 +9,8 @@
         <Title>JonathanMcCaffrey-Components</Title>
         <Authors>Jonathan McCaffrey</Authors>
         <Description>Some shared components</Description>
+        <PackageProjectUrl>https://github.com/JonathanMcCaffrey/JonathanMcCaffrey</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/JonathanMcCaffrey/JonathanMcCaffrey-Components</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
