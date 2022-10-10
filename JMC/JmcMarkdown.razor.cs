@@ -1,9 +1,9 @@
 ﻿using Markdig;
 using Microsoft.AspNetCore.Components;
 
-namespace Components;
+namespace JMC;
 
-public partial class MarkdownComponent : ComponentBase
+public partial class JmcMarkdown : ComponentBase
 {
     private string? _content;
 
@@ -14,7 +14,7 @@ public partial class MarkdownComponent : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         _content = await LoadMarkdown(HttpClient, FilePath);
-        StateHasChanged(); 
+        StateHasChanged();
     }
 
     private static readonly MarkdownPipeline Pipeline

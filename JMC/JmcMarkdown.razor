@@ -1,0 +1,12 @@
+﻿@using Markdig
+
+@if (_content == null)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+}
+else
+{
+    <div class="markdown">
+        @((MarkupString)Markdown.ToHtml(_content, Pipeline))
+    </div>
+}
