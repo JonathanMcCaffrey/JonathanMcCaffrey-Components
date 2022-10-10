@@ -1,0 +1,72 @@
+﻿@using Markdig
+@using YamlDotNet.Serialization
+@using Markdig.Extensions.Yaml
+@using Markdig.Syntax
+@inject HttpClient HttpClient
+
+@if (_content == null)
+{
+    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7"/>
+}
+else
+{
+    <div class="markdown">
+        @((MarkupString)Markdown.ToHtml(_content, Pipeline))
+    </div>
+}
+
+@code {
+    private string? _content;
+
+    [Parameter]
+    public string FilePath { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _content = await LoadMarkdown(HttpClient, FilePath);
+    }
+
+    private static readonly IDeserializer YamlDeserializer =
+        new DeserializerBuilder()
+            .IgnoreUnmatchedProperties()
+            .Build();
+
+    public static readonly MarkdownPipeline Pipeline
+        = new MarkdownPipelineBuilder()
+            .UseYamlFrontMatter()
+            .UseAdvancedExtensions()
+            .Build();
+
+    public static async Task<string> LoadMarkdown(HttpClient httpClient, string filepath)
+    {
+        return await httpClient.GetStringAsync(filepath);
+    }
+
+    public static async Task<T> LoadFrontMatter<T>(HttpClient httpClient, string filepath)
+    {
+        var markdown = await LoadMarkdown(httpClient, filepath);
+
+        var document = Markdown.Parse(markdown, Pipeline);
+
+        var block = document
+            .Descendants<YamlFrontMatterBlock>()
+            .FirstOrDefault();
+
+        if (block == null)
+            return default!;
+
+        var yaml =
+            block
+                .Lines
+                .Lines
+                .OrderByDescending(x => x.Line)
+                .Select(x => $"{x}\n")
+                .ToList()
+                .Select(x => x.Replace("---", string.Empty))
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Aggregate((s, agg) => agg + s);
+
+        return YamlDeserializer.Deserialize<T>(yaml);
+    }
+
+}
