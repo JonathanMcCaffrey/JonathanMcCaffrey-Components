@@ -11,6 +11,7 @@
         <Description>Some shared components</Description>
         <PackageProjectUrl>https://github.com/JonathanMcCaffrey/JonathanMcCaffrey</PackageProjectUrl>
         <RepositoryUrl>https://github.com/JonathanMcCaffrey/JonathanMcCaffrey-Components</RepositoryUrl>
+        <PackageVersion>1.0.2</PackageVersion>
     </PropertyGroup>
 
     <ItemGroup>
